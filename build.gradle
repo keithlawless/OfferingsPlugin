@@ -1,0 +1,24 @@
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+}
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
+    mavenCentral()
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/public/"
+    }
+}
+
+dependencies {
+    implementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.seeseemelk:MockBukkit-v1.14:0.2.1'
+}
+
