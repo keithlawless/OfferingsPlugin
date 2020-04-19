@@ -2,6 +2,7 @@ package com.keithlawless.plugins.offerings.commands;
 
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
+import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,9 +13,11 @@ import org.bukkit.inventory.ItemStack;
 public class SetAltarCommandExecutor implements CommandExecutor {
 
     private final OfferingsPlugin offeringsPlugin;
+    private final PlayerStrikeEntityEventListener playerStrikeEntityEventListener;
 
-    public SetAltarCommandExecutor(OfferingsPlugin offeringsPlugin) {
+    public SetAltarCommandExecutor(OfferingsPlugin offeringsPlugin, PlayerStrikeEntityEventListener playerStrikeEntityEventListener) {
         this.offeringsPlugin = offeringsPlugin;
+        this.playerStrikeEntityEventListener = playerStrikeEntityEventListener;
     }
 
     @Override
@@ -57,6 +60,10 @@ public class SetAltarCommandExecutor implements CommandExecutor {
 
         // Make this player the current "activeAltarSetter"
         altarData.activeAltarSetter = player;
+
+        // Activate the event listener that looks for player strikes.
+        this.playerStrikeEntityEventListener.activate();
+
         player.sendMessage("Strike the chest you want to use as the Offerings Altar.");
 
         return false;

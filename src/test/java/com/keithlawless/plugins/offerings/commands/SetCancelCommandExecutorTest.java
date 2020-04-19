@@ -4,6 +4,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
+import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
@@ -24,8 +25,9 @@ public class SetCancelCommandExecutorTest {
     public void setUp() {
         server = MockBukkit.mock();
         plugin = (OfferingsPlugin) MockBukkit.load(OfferingsPlugin.class);
-        setCancelCommandExecutor = new SetCancelCommandExecutor(plugin);
-        setAltarCommandExecutor = new SetAltarCommandExecutor(plugin);
+        PlayerStrikeEntityEventListener playerStrikeEntityEventListener = new PlayerStrikeEntityEventListener(plugin);
+        setCancelCommandExecutor = new SetCancelCommandExecutor(plugin, playerStrikeEntityEventListener);
+        setAltarCommandExecutor = new SetAltarCommandExecutor(plugin, playerStrikeEntityEventListener);
     }
 
     @After

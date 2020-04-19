@@ -4,6 +4,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
+import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
@@ -23,7 +24,7 @@ public class SetAltarCommandExecutorTest {
     public void setUp() {
         server = MockBukkit.mock();
         plugin = (OfferingsPlugin) MockBukkit.load(OfferingsPlugin.class);
-        setAltarCommandExecutor = new SetAltarCommandExecutor(plugin);
+        setAltarCommandExecutor = new SetAltarCommandExecutor(plugin, new PlayerStrikeEntityEventListener(plugin));
     }
 
     @After
