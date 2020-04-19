@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class SetAltarCommandExecutor implements CommandExecutor {
+public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallback {
 
     private final OfferingsPlugin offeringsPlugin;
     private final PlayerStrikeEntityEventListener playerStrikeEntityEventListener;
@@ -62,10 +62,15 @@ public class SetAltarCommandExecutor implements CommandExecutor {
         altarData.activeAltarSetter = player;
 
         // Activate the event listener that looks for player strikes.
-        this.playerStrikeEntityEventListener.activate();
+        this.playerStrikeEntityEventListener.activate(this);
 
         player.sendMessage("Strike the chest you want to use as the Offerings Altar.");
 
         return false;
+    }
+
+    @Override
+    public void altarSet() {
+        AltarData.getInstance().activeAltarSetter = null;
     }
 }
