@@ -1,15 +1,12 @@
 package com.keithlawless.plugins.offerings.data;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
-import java.util.Arrays;
 
 public class AltarData {
 
     private static AltarData singleton = null;
-
-    private Material[] altarMaterials = new Material[]{Material.CHEST};
 
     private AltarData() {
         activeAltarSetter = null;
@@ -30,8 +27,8 @@ public class AltarData {
         return (!(activeAltarSetter == null));
     }
 
-    public boolean materialCanBeAnAltar(Material material) {
-        return Arrays.asList(altarMaterials).contains(material);
+    public boolean materialCanBeAnAltar(Block block) {
+        return (block.getState() instanceof Container);
     }
 
     // Ideally, this method should only be called by your unit tests.

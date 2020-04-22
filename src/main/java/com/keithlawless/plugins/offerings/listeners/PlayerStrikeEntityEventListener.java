@@ -4,6 +4,7 @@ import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.commands.AltarSetCallback;
 import com.keithlawless.plugins.offerings.data.AltarData;
 import org.bukkit.Material;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,12 +49,17 @@ public class PlayerStrikeEntityEventListener implements Listener {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
             if(heldItem.getType() == Material.WOODEN_SWORD) {
                 // If the struck object can be an altar, it becomes the new altar.
-                //TODO: Don't allow if altar is not empty of blocks (since we will clear all blocks "offered").
-                if(playerInteractEvent.hasBlock() && altarData.materialCanBeAnAltar(playerInteractEvent.getClickedBlock().getType())) {
-                    altarData.altarBlock = playerInteractEvent.getClickedBlock();
-                    player.sendMessage("You have set the new altar.");
-                    this.altarSetCallback.altarSet();
-                    //TODO: Take the "magic wand" away after a successful altar set action.
+                if(playerInteractEvent.hasBlock() && altarData.materialCanBeAnAltar(playerInteractEvent.getClickedBlock())) {
+                    Container container = (Container)playerInteractEvent.getClickedBlock().getState();
+                    if(isEmpty(container.getInventory().getStorageContents())) {
+                        altarData.altarBlock = playerInteractEvent.getClickedBlock();
+                        player.sendMessage("You have set the new altar.");
+                        this.altarSetCallback.altarSet();
+                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));
+                    }
+                    else {
+                        player.sendMessage("Inventory must be empty before this block can be an altar.");
+                    }
                 }
             }
         }
@@ -66,5 +72,18 @@ public class PlayerStrikeEntityEventListener implements Listener {
 
     public void deactivate() {
         this.isActive = false;
+    }
+
+    // Check if an storage block is empty.
+    private boolean isEmpty(ItemStack[] stacks) {
+        if(stacks == null) {
+            return true;
+        }
+
+        for(ItemStack stack : stacks) {
+            if((stack != null ) && (stack.getAmount() > 0))
+                return false;
+        }
+        return true;
     }
 }
