@@ -2,7 +2,6 @@ package com.keithlawless.plugins.offerings;
 
 import com.keithlawless.plugins.offerings.commands.SetAltarCommandExecutor;
 import com.keithlawless.plugins.offerings.commands.SetCancelCommandExecutor;
-import com.keithlawless.plugins.offerings.data.PlayerDatabase;
 import com.keithlawless.plugins.offerings.listeners.InventoryEventListener;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
 import org.bukkit.plugin.PluginDescriptionFile;
