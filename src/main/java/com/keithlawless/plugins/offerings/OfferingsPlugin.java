@@ -2,13 +2,16 @@ package com.keithlawless.plugins.offerings;
 
 import com.keithlawless.plugins.offerings.commands.SetAltarCommandExecutor;
 import com.keithlawless.plugins.offerings.commands.SetCancelCommandExecutor;
+import com.keithlawless.plugins.offerings.data.LevelDatabase;
 import com.keithlawless.plugins.offerings.listeners.InventoryEventListener;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
+import com.keithlawless.plugins.offerings.seed.LevelDataSeed;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+
 
 public class OfferingsPlugin extends JavaPlugin {
 
@@ -32,6 +35,9 @@ public class OfferingsPlugin extends JavaPlugin {
 
         this.getCommand("offerings-set-altar").setExecutor(new SetAltarCommandExecutor(this, this.playerStrikeEntityEventListener));
         this.getCommand("offerings-set-cancel").setExecutor(new SetCancelCommandExecutor(this, this.playerStrikeEntityEventListener));
+
+        LevelDatabase levelDatabase = LevelDatabase.getInstance();
+        levelDatabase.seed(new LevelDataSeed());
     }
 
 }
