@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class PlayerStrikeEntityEventListener implements Listener {
+
     private OfferingsPlugin offeringsPlugin;
     private boolean isActive = false;
     private AltarSetCallback altarSetCallback;
@@ -45,14 +46,14 @@ public class PlayerStrikeEntityEventListener implements Listener {
         Make sure the player is the Active Altar Setter, and is holding the "magic wand",
         a.k.a. a Wooden Sword.
          */
-        if(altarData.existsActiveAltarSetter() && altarData.activeAltarSetter == player) {
+        if(altarData.existsActiveAltarSetter() && altarData.getActiveAltarSetter() == player) {
             ItemStack heldItem = player.getInventory().getItemInMainHand();
             if(heldItem.getType() == Material.WOODEN_SWORD) {
                 // If the struck object can be an altar, it becomes the new altar.
                 if(playerInteractEvent.hasBlock() && altarData.materialCanBeAnAltar(playerInteractEvent.getClickedBlock())) {
                     Container container = (Container)playerInteractEvent.getClickedBlock().getState();
                     if(isEmpty(container.getInventory().getStorageContents())) {
-                        altarData.altarBlock = playerInteractEvent.getClickedBlock();
+                        altarData.setAltar(playerInteractEvent.getClickedBlock(), playerInteractEvent.getClickedBlock().getLocation());
                         player.sendMessage("You have set the new altar.");
                         this.altarSetCallback.altarSet();
                         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR,0));

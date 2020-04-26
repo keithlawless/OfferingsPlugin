@@ -34,7 +34,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
 
         // If there is already an activeAltarSetter, display a message and exit.
         if(altarData.existsActiveAltarSetter()) {
-            Player activeAltarSetter = altarData.activeAltarSetter;
+            Player activeAltarSetter = altarData.getActiveAltarSetter();
             player.sendMessage(String.format("Player %s is already setting an altar.", activeAltarSetter.getDisplayName()));
             return false;
         }
@@ -59,7 +59,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
         }
 
         // Make this player the current "activeAltarSetter"
-        altarData.activeAltarSetter = player;
+        altarData.setActiveAltarSetter(player);
 
         // Activate the event listener that looks for player strikes.
         this.playerStrikeEntityEventListener.activate(this);
@@ -71,6 +71,6 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
 
     @Override
     public void altarSet() {
-        AltarData.getInstance().activeAltarSetter = null;
+        AltarData.getInstance().clearActiveAltarSetter();
     }
 }

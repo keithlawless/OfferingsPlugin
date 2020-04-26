@@ -33,10 +33,10 @@ public class SetCancelCommandExecutor implements CommandExecutor {
 
         Player currentPlayer = null;
         if(altarData.existsActiveAltarSetter()) {
-            currentPlayer = altarData.activeAltarSetter;
+            currentPlayer = altarData.getActiveAltarSetter();
         }
 
-        altarData.activeAltarSetter = null;
+        altarData.clearActiveAltarSetter();
 
         if(!(currentPlayer == null)) {
             if(currentPlayer.equals(player)) {

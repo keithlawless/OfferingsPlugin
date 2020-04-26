@@ -47,7 +47,7 @@ public class SetAltarCommandExecutorTest {
         PrivatePlayerMock currentActivePlayer = new PrivatePlayerMock(server, activeName);
 
         AltarData altarData = AltarData.getInstance();
-        altarData.activeAltarSetter = currentActivePlayer;
+        altarData.setActiveAltarSetter(currentActivePlayer);
 
         // Try to make Johnny the activeAltarSetter
         PrivatePlayerMock testPlayer = new PrivatePlayerMock(server, "JohnnyRose");
@@ -81,7 +81,7 @@ public class SetAltarCommandExecutorTest {
 
         setAltarCommandExecutor.onCommand(player, null, null, null);
 
-        assertThat(player.getDisplayName(), equalTo(AltarData.getInstance().activeAltarSetter.getDisplayName()));
+        assertThat(player.getDisplayName(), equalTo(AltarData.getInstance().getActiveAltarSetter().getDisplayName()));
 
     }
 
@@ -92,7 +92,7 @@ public class SetAltarCommandExecutorTest {
 
         setAltarCommandExecutor.onCommand(player, null, null, null);
 
-        assertThat(player.getDisplayName(), equalTo(AltarData.getInstance().activeAltarSetter.getDisplayName()));
+        assertThat(player.getDisplayName(), equalTo(AltarData.getInstance().getActiveAltarSetter().getDisplayName()));
     }
 
 }
