@@ -30,4 +30,7 @@ public class PlayerData {
         offerings.push(offering);
     }
 
+    public Integer getLevel() {
+        return level;
+    }
 }

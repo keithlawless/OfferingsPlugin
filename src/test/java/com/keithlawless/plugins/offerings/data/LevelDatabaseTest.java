@@ -13,10 +13,14 @@ import static org.junit.Assert.*;
 
 public class LevelDatabaseTest {
 
+    private Integer levelCount = 0;
+
     @Before
     public void setUp() {
         LevelDatabase levelDatabase = LevelDatabase.getInstance();
-        levelDatabase.seed(new LevelDataSeed());
+        LevelDataSeed levelDataSeed = new LevelDataSeed();
+        levelDatabase.seed(levelDataSeed);
+        levelCount = levelDataSeed.getLevelCount();
     }
 
     @Test
@@ -41,6 +45,6 @@ public class LevelDatabaseTest {
     @Test
     public void testSeed() {
         LevelDatabase levelDatabase = LevelDatabase.getInstance();
-        assertThat(levelDatabase.getLevelCount(), equalTo(3));
+        assertThat(levelDatabase.getLevelCount(), equalTo(this.levelCount));
     }
 }
