@@ -5,7 +5,9 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
+import com.keithlawless.plugins.offerings.util.PlayerMessage;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +39,7 @@ public class SetAltarCommandExecutorTest {
     public void testCheckIfAPlayer() {
         ConsoleMock consoleMock = new ConsoleMock();
         setAltarCommandExecutor.onCommand( consoleMock, null, null, null );
-        assertThat(consoleMock.receivedMessage, equalTo("The offerings-set-altar command can only be executed by a player."));
+        assertThat(PlayerMessage.unformat(consoleMock.receivedMessage), equalTo("The offerings-set-altar command can only be executed by a player."));
     }
 
     @Test
@@ -53,7 +55,7 @@ public class SetAltarCommandExecutorTest {
         PrivatePlayerMock testPlayer = new PrivatePlayerMock(server, "JohnnyRose");
         setAltarCommandExecutor.onCommand(testPlayer, null, null, null);
 
-        assertThat(testPlayer.receivedMessage, equalTo(String.format("Player %s is already setting an altar.", currentActivePlayer.getDisplayName())));
+        assertThat(PlayerMessage.unformat(testPlayer.receivedMessage), equalTo(String.format("Player %s is already setting an altar.", currentActivePlayer.getDisplayName())));
     }
 
     @Test
@@ -68,7 +70,7 @@ public class SetAltarCommandExecutorTest {
 
         setAltarCommandExecutor.onCommand(player, null, null, null);
 
-        assertThat(player.receivedMessage, equalTo("You must not be holding any items in your main hand when using this command."));
+        assertThat(PlayerMessage.unformat(player.receivedMessage), equalTo("You must not be holding any items in your main hand when using this command."));
     }
 
     @Test

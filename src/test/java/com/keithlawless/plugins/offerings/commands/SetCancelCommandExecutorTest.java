@@ -5,6 +5,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
+import com.keithlawless.plugins.offerings.util.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.junit.After;
@@ -40,7 +41,7 @@ public class SetCancelCommandExecutorTest {
     public void testCheckIfAPlayer() {
         ConsoleMock consoleMock = new ConsoleMock();
         setCancelCommandExecutor.onCommand( consoleMock, null, null, null );
-        assertThat(consoleMock.receivedMessage, equalTo("The offerings-set-cancel command can only be executed by a player."));
+        assertThat(PlayerMessage.unformat(consoleMock.receivedMessage), equalTo("The offerings-set-cancel command can only be executed by a player."));
     }
 
     @Test
@@ -51,7 +52,7 @@ public class SetCancelCommandExecutorTest {
 
         setCancelCommandExecutor.onCommand(player, null, null, null);
 
-        assertThat(player.receivedMessage, equalTo("You have cancelled the Set Altar command for yourself."));
+        assertThat(PlayerMessage.unformat(player.receivedMessage), equalTo("You have cancelled the Set Altar command for yourself."));
     }
 
     @Test
@@ -63,8 +64,8 @@ public class SetCancelCommandExecutorTest {
         PrivatePlayerMock cancelPlayer = new PrivatePlayerMock(server, "AlexisRose");
         setCancelCommandExecutor.onCommand(cancelPlayer, null, null, null);
 
-        assertThat(cancelPlayer.receivedMessage, equalTo(String.format("You have cancelled the Set Altar command for %s.", activePlayer.getDisplayName())));
-        assertThat(activePlayer.receivedMessage, equalTo(String.format("Set Altar command was cancelled by %s.", cancelPlayer.getDisplayName())));
+        assertThat(PlayerMessage.unformat(cancelPlayer.receivedMessage), equalTo(String.format("You have cancelled the Set Altar command for %s.", activePlayer.getDisplayName())));
+        assertThat(PlayerMessage.unformat(activePlayer.receivedMessage), equalTo(String.format("Set Altar command was cancelled by %s.", cancelPlayer.getDisplayName())));
     }
 
     @Test
@@ -72,8 +73,7 @@ public class SetCancelCommandExecutorTest {
         PrivatePlayerMock player = new PrivatePlayerMock(server, "MoiraRose");
         setCancelCommandExecutor.onCommand(player, null, null, null);
 
-        assertThat(player.receivedMessage, equalTo("No one was using the Set Altar command. No action taken."));
+        assertThat(PlayerMessage.unformat(player.receivedMessage), equalTo("No one was using the Set Altar command. No action taken."));
 
     }
-
 }

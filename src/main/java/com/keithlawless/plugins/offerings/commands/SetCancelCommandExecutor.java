@@ -3,6 +3,7 @@ package com.keithlawless.plugins.offerings.commands;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
+import com.keithlawless.plugins.offerings.util.PlayerMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +23,7 @@ public class SetCancelCommandExecutor implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
         if(!(sender instanceof Player)) {
-            sender.sendMessage("The offerings-set-cancel command can only be executed by a player.");
+            sender.sendMessage(PlayerMessage.format("The offerings-set-cancel command can only be executed by a player."));
             return false;
         }
 
@@ -40,19 +41,19 @@ public class SetCancelCommandExecutor implements CommandExecutor {
 
         if(!(currentPlayer == null)) {
             if(currentPlayer.equals(player)) {
-                player.sendMessage("You have cancelled the Set Altar command for yourself.");
+                player.sendMessage(PlayerMessage.format("You have cancelled the Set Altar command for yourself."));
             }
             else {
-                player.sendMessage(String.format("You have cancelled the Set Altar command for %s.", currentPlayer.getDisplayName()));
+                player.sendMessage(PlayerMessage.format(String.format("You have cancelled the Set Altar command for %s.", currentPlayer.getDisplayName())));
                 //TODO: Check if currentPlayer is still online before sending a message
-                currentPlayer.sendMessage(String.format("Set Altar command was cancelled by %s.", player.getDisplayName()));
+                currentPlayer.sendMessage(PlayerMessage.format(String.format("Set Altar command was cancelled by %s.", player.getDisplayName())));
             }
 
             // Deactivate the event listener that listens for player strikes.
             this.playerStrikeEntityEventListener.deactivate();
         }
         else {
-            player.sendMessage("No one was using the Set Altar command. No action taken.");
+            player.sendMessage(PlayerMessage.format("No one was using the Set Altar command. No action taken."));
         }
 
         return false;

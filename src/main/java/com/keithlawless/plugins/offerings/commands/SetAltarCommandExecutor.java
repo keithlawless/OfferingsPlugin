@@ -3,6 +3,7 @@ package com.keithlawless.plugins.offerings.commands;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.AltarData;
 import com.keithlawless.plugins.offerings.listeners.PlayerStrikeEntityEventListener;
+import com.keithlawless.plugins.offerings.util.PlayerMessage;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,7 +24,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage("The offerings-set-altar command can only be executed by a player.");
+            sender.sendMessage(PlayerMessage.format("The offerings-set-altar command can only be executed by a player."));
             return false;
         }
 
@@ -35,7 +36,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
         // If there is already an activeAltarSetter, display a message and exit.
         if(altarData.existsActiveAltarSetter()) {
             Player activeAltarSetter = altarData.getActiveAltarSetter();
-            player.sendMessage(String.format("Player %s is already setting an altar.", activeAltarSetter.getDisplayName()));
+            player.sendMessage(PlayerMessage.format(String.format("Player %s is already setting an altar.", activeAltarSetter.getDisplayName())));
             return false;
         }
 
@@ -49,7 +50,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
 
         if(heldItem.getType() != Material.WOODEN_SWORD) {
             if (heldItem.getAmount() > 0) {
-                player.sendMessage("You must not be holding any items in your main hand when using this command.");
+                player.sendMessage(PlayerMessage.format("You must not be holding any items in your main hand when using this command."));
                 return false;
             }
 
@@ -64,7 +65,7 @@ public class SetAltarCommandExecutor implements CommandExecutor, AltarSetCallbac
         // Activate the event listener that looks for player strikes.
         this.playerStrikeEntityEventListener.activate(this);
 
-        player.sendMessage("Strike the chest you want to use as the Offerings Altar.");
+        player.sendMessage(PlayerMessage.format("Strike the chest you want to use as the Offerings Altar."));
 
         return false;
     }
