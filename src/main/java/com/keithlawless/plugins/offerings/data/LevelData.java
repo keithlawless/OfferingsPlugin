@@ -41,8 +41,12 @@ public class LevelData {
     public void addThreshold(Material material, Integer amount) {
         if(thresholds != null) {
             OfferingThreshold offeringThreshold = new OfferingThreshold(material, amount);
-            thresholds.push(offeringThreshold);
+            thresholds.add(offeringThreshold);
         }
+    }
+
+    public LinkedList<OfferingThreshold> getThresholds() {
+        return thresholds;
     }
 
     public Integer getLevel() {

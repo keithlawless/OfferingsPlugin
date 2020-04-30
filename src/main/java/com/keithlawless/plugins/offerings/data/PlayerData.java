@@ -1,7 +1,9 @@
 package com.keithlawless.plugins.offerings.data;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.UUID;
 
 import org.bukkit.Material;
@@ -22,15 +24,44 @@ public class PlayerData {
     }
 
     public void addOffering(Offering offering) {
-        offerings.push(offering);
+        offerings.add(offering);
     }
 
     public void addOffering(Material material, Integer quantity) {
         Offering offering = new Offering(this.level, material, quantity, LocalDateTime.now());
-        offerings.push(offering);
+        offerings.add(offering);
+    }
+
+    public UUID getUniqueId() {
+        return uniqueId;
     }
 
     public Integer getLevel() {
         return level;
     }
+
+    public HashMap<Material,Integer> getOfferingsForCurrentLevel() {
+        Integer existingQuantity = null;
+        HashMap<Material,Integer> map = new HashMap<>();
+        ListIterator<Offering> listIterator = offerings.listIterator();
+        while(listIterator.hasNext()) {
+            Offering offering = listIterator.next();
+            if(offering.getLevel() == this.level) {
+                existingQuantity = map.get(offering.getMaterial());
+                if((existingQuantity == null) || (existingQuantity == 0))  {
+                    map.put(offering.getMaterial(), offering.getQuantity());
+                }
+                else {
+                    Integer newQuantity = existingQuantity + offering.getQuantity();
+                    map.put(offering.getMaterial(), newQuantity);
+                }
+            }
+        }
+        return map;
+    }
+
+    public void levelUp() {
+        level++;
+    }
+
 }

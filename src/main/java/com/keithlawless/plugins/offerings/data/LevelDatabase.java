@@ -24,7 +24,7 @@ public class LevelDatabase {
     }
 
     public Integer getLevelCount() {
-        return levelDatabase.size();
+        return levelDatabase.size() - 1;
     }
 
     public void seed(LevelDataSeed levelDataSeed) {

@@ -3,9 +3,11 @@ package com.keithlawless.plugins.offerings.listeners;
 import com.keithlawless.plugins.offerings.OfferingsPlugin;
 import com.keithlawless.plugins.offerings.data.*;
 import com.keithlawless.plugins.offerings.tasks.ClearInventoryTask;
+import com.keithlawless.plugins.offerings.tasks.PlayerLevelUpTask;
 import com.keithlawless.plugins.offerings.util.PlayerMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
@@ -17,6 +19,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class InventoryEventListener implements Listener {
@@ -95,7 +98,15 @@ public class InventoryEventListener implements Listener {
         }
 
         ItemStack offeredItemStack = inventoryClickEvent.getCursor();
-        int quantity = offeredItemStack.getAmount();
+
+        int quantity = 0;
+        if(inventoryClickEvent.isRightClick()) {
+            quantity = 1;
+        }
+        else if(inventoryClickEvent.isLeftClick()) {
+            quantity = offeredItemStack.getAmount();
+        }
+
         Material material = offeredItemStack.getType();
 
         // If the Material is AIR, exit.
@@ -105,6 +116,7 @@ public class InventoryEventListener implements Listener {
 
         PlayerData playerData = PlayerDatabase.getInstance().getPlayer(inventoryClickEvent.getWhoClicked().getUniqueId());
         playerData.addOffering(material,quantity);
+        PlayerDatabase.getInstance().updatePlayer(playerData);
 
         // After the offering has been made, clear the inventory.
         ClearInventoryTask clearInventoryTask = new ClearInventoryTask(inventory);
@@ -118,5 +130,16 @@ public class InventoryEventListener implements Listener {
 
         inventoryClickEvent.getWhoClicked().sendMessage(PlayerMessage.format(playerMsg));
 
+        // Check if the Player is ready to level up. Don't block this thread while we're doing that.
+        PlayerLevelUpTask playerLevelUpTask = new PlayerLevelUpTask(offeringsPlugin, getPlayerByUuid(inventoryClickEvent.getWhoClicked().getUniqueId()));
+        this.offeringsPlugin.getServer().getScheduler().runTask(offeringsPlugin, playerLevelUpTask);
+    }
+
+    public Player getPlayerByUuid(UUID uuid) {
+        for(Player p : this.offeringsPlugin.getServer().getOnlinePlayers())
+            if(p.getUniqueId().equals(uuid))
+                return p;
+
+        throw new IllegalArgumentException();
     }
 }

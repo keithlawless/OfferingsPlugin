@@ -26,4 +26,9 @@ public class PlayerDatabase {
 
         return playerData;
     }
+
+    public void updatePlayer(PlayerData playerData) {
+        this.playerDatabase.put(playerData.getUniqueId(), playerData);
+    }
+
 }
