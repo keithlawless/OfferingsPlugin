@@ -1,7 +1,8 @@
 name: Offerings
 main: com.keithlawless.plugins.offerings.OfferingsPlugin
-version: 1.0
-api-version: 1.15
+version: 1.0.0
+api-version: 1.19
+description: An alternative leveling system for SpigotMC servers
 commands:
   offerings-set-altar:
     description: Set the Altar where players will make their Offerings

@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
-    implementation 'org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
